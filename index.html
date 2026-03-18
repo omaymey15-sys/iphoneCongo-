@@ -3,115 +3,269 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>iPhoneCongo</title>
+<title>iPhoneCongo Store</title>
+
+<!-- Font Awesome pour WhatsApp -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <style>
+/* ============ GLOBAL ============ */
 body {
     margin: 0;
-    font-family: Arial;
+    font-family: -apple-system, BlinkMacSystemFont, Arial, sans-serif;
     background: #0f172a;
     color: white;
 }
 
-/* HEADER */
+/* ============ HEADER ============ */
 header {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     padding: 15px;
     background: #020617;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 }
 
 .logo {
     font-weight: bold;
+    font-size: 20px;
 }
 
 .icons {
     display: flex;
     gap: 15px;
+    font-size: 20px;
+    cursor: pointer;
 }
 
-/* HERO */
+/* ============ HERO ============ */
 .hero {
     text-align: center;
     padding: 20px;
 }
 
-.hero p {
-    color: #94a3b8;
+.hero h2 {
+    font-size: 22px;
+    margin-bottom: 5px;
 }
 
-/* CATEGORIES */
+.hero p {
+    color: #94a3b8;
+    margin: 3px 0;
+}
+
+/* ============ CATEGORIES ============ */
 .categories {
     display: flex;
     justify-content: space-around;
     padding: 10px;
+    flex-wrap: wrap;
 }
 
 .cat {
     background: #1e293b;
-    padding: 10px;
-    border-radius: 10px;
+    padding: 10px 20px;
+    border-radius: 15px;
+    margin: 5px;
+    cursor: pointer;
+    transition: 0.3s;
 }
 
-/* PRODUITS */
+.cat:hover {
+    background: #2563eb;
+}
+
+/* ============ COMPTEURS ============ */
+.counters {
+    text-align: center;
+    margin: 15px 0;
+}
+
+.counters span {
+    margin: 0 10px;
+    font-weight: bold;
+}
+
+/* ============ PRODUITS ============ */
 .products {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
+    grid-template-columns: repeat(auto-fill,minmax(150px,1fr));
+    gap: 15px;
     padding: 10px;
 }
 
-.product {
+.card {
     background: #1e293b;
-    border-radius: 10px;
-    padding: 10px;
+    border-radius: 15px;
+    overflow: hidden;
     text-align: center;
+    padding: 10px;
+    transition: 0.3s;
 }
 
-.product img {
+.card:hover {
+    transform: scale(1.05);
+}
+
+.card-image img {
     width: 100%;
+    height: auto;
     border-radius: 10px;
+}
+
+.card-title {
+    font-weight: bold;
+    margin-top: 5px;
+}
+
+.card-price {
+    color: #22c55e;
+    margin: 5px 0;
+}
+
+.whatsapp-btn {
+    display: inline-block;
+    margin-top: 5px;
+    background: #25D366;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 10px;
+    text-decoration: none;
+}
+
+/* ============ BADGE ============ */
+.store-badge {
+    position: absolute;
+    background: #2563eb;
+    color: white;
+    padding: 3px 7px;
+    border-radius: 8px;
+    font-size: 12px;
+    top: 8px;
+    left: 8px;
+}
+
+/* Responsive */
+@media(max-width:600px){
+    .categories {
+        flex-direction: column;
+        align-items: center;
+    }
 }
 </style>
 
 </head>
-
 <body>
 
+<!-- HEADER -->
 <header>
     <div class="logo">IPHONE CONGO</div>
-    <div class="icons">
-        🔍 ☰
-    </div>
+    <div class="icons">🔍 ☰</div>
 </header>
 
+<!-- HERO -->
 <section class="hero">
-    <h2>Vente iPhone, Samsung & accessoires</h2>
+    <h2>Vente iPhone, Samsung & Accessoires</h2>
     <p>📍 Kolwezi - Lubumbashi</p>
     <p>🚚 Livraison partout en RDC</p>
 </section>
 
+<!-- CATEGORIES -->
 <section class="categories">
-    <div class="cat">📱 iPhone</div>
-    <div class="cat">📱 Samsung</div>
-    <div class="cat">🎧 Accessoires</div>
+    <div class="cat" onclick="filterCategory('iphone')">📱 iPhone (<span id="iphoneCount">0</span>)</div>
+    <div class="cat" onclick="filterCategory('samsung')">📱 Samsung (<span id="samsungCount">0</span>)</div>
+    <div class="cat" onclick="filterCategory('accessoire')">🎧 Accessoires (<span id="accessoryCount">0</span>)</div>
 </section>
 
-<section class="products">
-
-    <div class="product">
-        <img src="https://via.placeholder.com/150">
-        <p>iPhone 11</p>
-        <p>500$</p>
-    </div>
-
-    <div class="product">
-        <img src="https://via.placeholder.com/150">
-        <p>Samsung S21</p>
-        <p>450$</p>
-    </div>
-
+<!-- PRODUITS -->
+<section class="products" id="productContainer">
+    <!-- Les cartes seront générées ici par JS -->
 </section>
+
+<!-- SCRIPT JS -->
+<script>
+// ==================== CONFIGURATION ====================
+const OFFICIAL_KEY = 'iphonecongo_official';
+const WHATSAPP_NUMBER = '243972685669';
+
+// ==================== PRODUITS ====================
+const initialProducts = [
+    // iPhones
+    { id: 1101, category: 'iphone', title: 'iPhone XR 64GB', price: 165, image: 'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-xr-blue-select-201809?wid=600&hei=600&fmt=jpeg&qlt=95&.v=1551226036000', store: 'Lubumbashi, Kolwezi', contact: WHATSAPP_NUMBER },
+    { id: 1102, category: 'iphone', title: 'iPhone 11 64GB', price: 195, image: 'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-11-black-select-2019?wid=600&hei=600&fmt=jpeg&qlt=95&.v=1550975408000', store: 'Lubumbashi, Kolwezi', contact: WHATSAPP_NUMBER },
+    { id: 1103, category: 'iphone', title: 'iPhone 12 64GB', price: 235, image: 'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-12-black-select-2020?wid=600&hei=600&fmt=jpeg&qlt=95&.v=1604347109000', store: 'Lubumbashi, Kolwezi', contact: WHATSAPP_NUMBER },
+    // Samsung
+    { id: 2101, category: 'samsung', title: 'Samsung A06 64GB', price: 105, image: 'https://images.samsung.com/is/image/samsung/p6pim/africa_en/sm-a065fzkdafd/gallery/africa-en-galaxy-a06-a065-sm-a065fzkdafd-536176333?wid=600&hei=600&fmt=jpeg', store: 'Lubumbashi, Kolwezi', contact: WHATSAPP_NUMBER },
+    { id: 2102, category: 'samsung', title: 'Samsung A07 128GB', price: 130, image: 'https://images.samsung.com/is/image/samsung/p6pim/africa_en/sm-a075fzkdafd/gallery/africa-en-galaxy-a07-a075-sm-a075fzkdafd-536176334?wid=600&hei=600&fmt=jpeg', store: 'Lubumbashi, Kolwezi', contact: WHATSAPP_NUMBER },
+    // Accessoires
+    { id: 4001, category: 'accessoire', title: 'Chargeur Apple 20W', price: 25, image: 'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/MU8X2?wid=600&hei=600&fmt=jpeg&qlt=95&.v=1590627935000', store: 'Lubumbashi, Kolwezi', contact: WHATSAPP_NUMBER },
+    { id: 4002, category: 'accessoire', title: 'AirPods 2', price: 80, image: 'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/airpods?wid=600&hei=600&fmt=jpeg&qlt=95&.v=1634140348000', store: 'Lubumbashi, Kolwezi', contact: WHATSAPP_NUMBER }
+];
+
+// ==================== LOCAL STORAGE ====================
+if(!localStorage.getItem(OFFICIAL_KEY)){
+    localStorage.setItem(OFFICIAL_KEY, JSON.stringify(initialProducts));
+}
+
+function loadProducts(){
+    try { return JSON.parse(localStorage.getItem(OFFICIAL_KEY)) || []; }
+    catch { return []; }
+}
+
+// ==================== FORMAT PRICE ====================
+function formatPrice(price){
+    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + '$';
+}
+
+// ==================== CREATE CARD ====================
+function createCard(product){
+    const cleanPhone = product.contact.replace(/[^0-9]/g,'');
+    const message = `Bonjour, je suis intéressé par *${product.title}* à ${formatPrice(product.price)}.`;
+    const whatsappLink = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(message)}`;
+    
+    return `
+    <div class="card">
+        <span class="store-badge">2 magasins</span>
+        <div class="card-image">
+            <img src="${product.image}" alt="${product.title}" loading="lazy" onerror="this.src='https://via.placeholder.com/200x200?text=Image'">
+        </div>
+        <div class="card-title">${product.title}</div>
+        <div class="card-price">${formatPrice(product.price)}</div>
+        <a href="${whatsappLink}" class="whatsapp-btn" target="_blank">
+            <i class="fab fa-whatsapp"></i> Contacter
+        </a>
+    </div>
+    `;
+}
+
+// ==================== DISPLAY PRODUCTS ====================
+function displayProducts(products = null){
+    const allProducts = products || loadProducts();
+    
+    const iphones = allProducts.filter(p=>p.category==='iphone');
+    const samsungs = allProducts.filter(p=>p.category==='samsung');
+    const accessoires = allProducts.filter(p=>p.category==='accessoire');
+    
+    document.getElementById('iphoneCount').textContent = iphones.length;
+    document.getElementById('samsungCount').textContent = samsungs.length;
+    document.getElementById('accessoryCount').textContent = accessoires.length;
+    
+    const container = document.getElementById('productContainer');
+    container.innerHTML = allProducts.map(createCard).join('');
+}
+
+// ==================== FILTER CATEGORY ====================
+function filterCategory(cat){
+    if(cat==='all') displayProducts();
+    else displayProducts(loadProducts().filter(p=>p.category===cat));
+}
+
+// ==================== INITIALIZE ====================
+document.addEventListener('DOMContentLoaded', ()=> displayProducts());
+</script>
 
 </body>
 </html>
