@@ -1,41 +1,98 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>iPhone Congo Store</title>
-<link rel="stylesheet" href="style.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iPhoneCongo - Store à Kolwezi & Lubumbashi</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!-- En-tête -->
+    <header>
+        <div class="container">
+            <div class="logo">
+                <h1>iPhone<span>Congo</span></h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#" class="active" data-category="all">Tous</a></li>
+                    <li><a href="#" data-category="iphone">iPhone</a></li>
+                    <li><a href="#" data-category="samsung">Samsung</a></li>
+                    <li><a href="#" data-category="accessoires">Accessoires</a></li>
+                </ul>
+            </nav>
+            <div class="store-location">
+                <span>📍 Kolwezi | Lubumbashi</span>
+            </div>
+        </div>
+    </header>
 
-<header>
-  <h1>📱 iPhone Congo Store</h1>
-  <nav>
-    <button class="cat active" onclick="filterCategory('all')">Tous</button>
-    <button class="cat" onclick="filterCategory('iphone')">iPhone</button>
-    <button class="cat" onclick="filterCategory('samsung')">Samsung</button>
-    <button class="cat" onclick="filterCategory('accessoire')">Accessoires</button>
-  </nav>
-</header>
+    <!-- Bannière -->
+    <section class="hero">
+        <div class="container">
+            <h2>Qualité, fiabilité et performance</h2>
+            <p>Découvrez les meilleurs smartphones et accessoires dans nos magasins</p>
+        </div>
+    </section>
 
-<section class="novelties">
-  <h2>Nouveautés 24H - iPhone</h2>
-  <div class="novelty-container" id="newIphone"></div>
-  <h2>Nouveautés 24H - Samsung</h2>
-  <div class="novelty-container" id="newSamsung"></div>
-  <h2>Nouveautés 24H - Accessoires</h2>
-  <div class="novelty-container" id="newAccessory"></div>
-</section>
+    <!-- Section Nouveautés -->
+    <section class="nouveautes">
+        <div class="container">
+            <h3>🔥 Nouveautés</h3>
+            <div class="produits-grid" id="nouveautes-grid">
+                <!-- Les nouveautés seront chargées ici par JavaScript -->
+            </div>
+        </div>
+    </section>
 
-<section class="products">
-  <h2>Produits</h2>
-  <div id="productContainer" class="product-grid"></div>
-</section>
+    <!-- Section Tous les produits -->
+    <section class="catalogue">
+        <div class="container">
+            <h3>📱 Notre catalogue</h3>
+            
+            <!-- Filtres par magasin -->
+            <div class="filtres-magasin">
+                <button class="filtre-btn active" data-store="all">Tous les magasins</button>
+                <button class="filtre-btn" data-store="kolwezi">Kolwezi</button>
+                <button class="filtre-btn" data-store="lubumbashi">Lubumbashi</button>
+            </div>
 
-<script src="produit/iphone.js"></script>
-<script src="produit/samsung.js"></script>
-<script src="produit/accessoires.js"></script>
-<script src="script.js"></script>
+            <!-- Grille des produits -->
+            <div class="produits-grid" id="produits-grid">
+                <!-- Les produits seront chargés ici par JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Pied de page -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>iPhoneCongo</h4>
+                    <p>Votre store de confiance à Kolwezi et Lubumbashi</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <p>📞 Kolwezi: +243 XXX XXX XXX</p>
+                    <p>📞 Lubumbashi: +243 XXX XXX XXX</p>
+                    <p>✉️ contact@iphonecongo.com</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Horaires</h4>
+                    <p>Lun - Sam: 9h - 18h</p>
+                    <p>Dim: Fermé</p>
+                </div>
+            </div>
+            <div class="copyright">
+                &copy; 2024 iPhoneCongo. Tous droits réservés.
+            </div>
+        </div>
+    </footer>
+
+    <script src="produit/iphone.js"></script>
+    <script src="produit/samsung.js"></script>
+    <script src="produit/accessoires.js"></script>
+    <script src="script.js"></script>
 </body>
-</html>
+                  </html>
